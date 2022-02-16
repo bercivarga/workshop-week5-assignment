@@ -1,25 +1,39 @@
 
 var _pokeList;
 var _pokemon;
-starturl = "https://pokeapi.co/api/v2/pokemon/?limit=30"
-getList(starturl)
-var shown = 50
+API_URL = 'https://pokeapi.co/api/v2/pokemon/'
+starturl = API_URL + "?limit=30"
+
+let searchmode = false
+
+
+
+
+
 
 document.addEventListener("scroll", function (event) {
     console.log(window.pageYOffset + window.innerHeight + "-" + document.scrollingElement.scrollHeight)
-    if (window.pageYOffset + window.innerHeight === document.scrollingElement.scrollHeight) {
+    if (window.pageYOffset + window.innerHeight >= document.scrollingElement.scrollHeight) {
         getList(_pokeList.next)
     }
 });
 
+if (!searchmode) {
+    getList(starturl)
+}
+
+
+document.getElementById("searchclick").addEventListener("click", function () { searchPokemon(document.getElementById("pname").value) });
+
+
 function updatePage(pokeList) {
     const main = document.getElementById("plist");
     numberOfResults = pokeList.results.length
-    for (let i = 1; i < numberOfResults; i++) {
-        const para = document.createElement("div");
+    for (let i = 0; i < numberOfResults; i++) {
         let position = pokeList.results[i]['url'].search("pokemon/")
         let pokemonNumbertemp = pokeList.results[i]['url'].substring(position + 8);
         let pokemonNumber = pokemonNumbertemp.slice(0, -1)
+        const para = document.createElement("div");
         para.classList.add('card', 'pokemon' + pokemonNumber);
         const node = document.createTextNode(pokeList.results[i]['name']);
         para.appendChild(node);
@@ -78,3 +92,12 @@ function getPokemon(url, number) {
         })
 }
 
+
+
+//------------Search--------------
+
+function searchPokemon(lookup) {
+    searchmode = true
+    document.querySelectorAll('.card').forEach(e => e.remove());
+    //getList(API_URL + lookup) this does not work
+}

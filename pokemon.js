@@ -4,13 +4,6 @@ var _pokemon;
 API_URL = 'https://pokeapi.co/api/v2/pokemon/'
 starturl = API_URL + "?limit=30"
 
-let searchmode = false
-
-
-
-
-
-
 document.addEventListener("scroll", function (event) {
     console.log(window.pageYOffset + window.innerHeight + "-" + document.scrollingElement.scrollHeight)
     if (window.pageYOffset + window.innerHeight >= document.scrollingElement.scrollHeight) {
@@ -18,13 +11,9 @@ document.addEventListener("scroll", function (event) {
     }
 });
 
-if (!searchmode) {
-    getList(starturl)
-}
-
+getList(starturl)
 
 document.getElementById("searchclick").addEventListener("click", function () { searchPokemon(document.getElementById("pname").value) });
-
 
 function updatePage(pokeList) {
     const main = document.getElementById("plist");
@@ -92,12 +81,10 @@ function getPokemon(url, number) {
         })
 }
 
-
-
 //------------Search--------------
 
 function searchPokemon(lookup) {
-    searchmode = true
-    document.querySelectorAll('.card').forEach(e => e.remove());
+    //document.querySelectorAll('.card').forEach(e => e.remove());
     //getList(API_URL + lookup) this does not work
+    alert('Not yet implemented')
 }

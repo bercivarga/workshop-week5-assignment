@@ -16,7 +16,9 @@ let pokemonList = document.querySelector('.pokemonList')
 let filterPrevious = document.querySelector('.previous')
 let filterNext = document.querySelector('.next')
 let filterCounter = document.querySelector('.counter')
-
+let searchBar = document.querySelector('.search')
+let submitSearchButton = document.querySelector('.submit')
+let resetSearchButton = document.querySelector('.reset')
 
 
 // functions /////////////////////////////////////////////////
@@ -24,7 +26,6 @@ let filterCounter = document.querySelector('.counter')
 //Retrieve Pokemon list
 function retrieveAllPokemon(Url) {
     pokemonList.classList.add('loading')
-    console.log(pokemonList)
     pokemonList.innerHTML = ''
     fetch(Url)
     .then(function(response) {
@@ -65,7 +66,6 @@ function retrieveAllPokemon(Url) {
     })
     .then(function() {
         pokemonList.classList.remove('loading')
-        console.log(pokemonList)
     })
     .catch(function(error) {
         console.error(error)
@@ -94,10 +94,22 @@ function retrievePokemon(Url, pokemonName) {
     })
     .catch(function(error) {
         console.error(error)
-        console.log('An error has occured')
+        console.log('Pokemon not found!')
         pokemonList.innerHTML = `
-            <h1>Bad request</h1>`
+            <h1>Not found!</h1>`
     }) 
+}
+
+//Retrieve by search
+function retrievePokemonSearch(searchValue) {
+    pokemonList.innerHTML = `<div class='pokemon ${searchValue}'></div>`
+    retrievePokemon(`${API_URL_BASE}/${searchValue}`, searchValue)
+}
+
+//Reset search
+function resetSearch() {
+    searchBar.value = ''
+    initialCall()
 }
 
 //Next page
@@ -112,7 +124,9 @@ function previousPage () {
     page -= 1
 }
 
-
+function initialCall() {
+    retrieveAllPokemon(`${API_URL_BASE}?limit=${limit}`)
+}
 
 //Setting filter button event listeners
 filterNext.addEventListener(
@@ -125,6 +139,15 @@ filterPrevious.addEventListener(
     function() {previousPage()}
 )
 
-// Initial calls /////////////////////////////////////////////////
+submitSearchButton.addEventListener(
+    'click',
+    function() {retrievePokemonSearch(searchBar.value)}
+)
 
-retrieveAllPokemon(`${API_URL_BASE}?limit=${limit}`)
+
+resetSearchButton.addEventListener(
+    'click',
+    function() {resetSearch()}
+)
+// Initial calls /////////////////////////////////////////////////
+initialCall()

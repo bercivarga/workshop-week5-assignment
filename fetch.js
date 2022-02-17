@@ -128,7 +128,7 @@ function initialCall() {
     retrieveAllPokemon(`${API_URL_BASE}?limit=${limit}`)
 }
 
-//Setting filter button event listeners
+//Setting filter button event listeners //////////////////////////
 filterNext.addEventListener(
     'click',
     function() {nextPage()}

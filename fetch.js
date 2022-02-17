@@ -2,7 +2,7 @@
 
 //URL variables
 const API_URL_BASE = "https://pokeapi.co/api/v2/pokemon"
-let limit = 100
+let limit = 9
 let page = 1
 let totalPages = 0
 let urlNext = ''
@@ -23,6 +23,8 @@ let filterCounter = document.querySelector('.counter')
 
 //Retrieve Pokemon list
 function retrieveAllPokemon(Url) {
+    pokemonList.classList.add('loading')
+    console.log(pokemonList)
     pokemonList.innerHTML = ''
     fetch(Url)
     .then(function(response) {
@@ -61,6 +63,10 @@ function retrieveAllPokemon(Url) {
         }
         
     })
+    .then(function() {
+        pokemonList.classList.remove('loading')
+        console.log(pokemonList)
+    })
     .catch(function(error) {
         console.error(error)
         console.log('An error has occured')
@@ -81,11 +87,10 @@ function retrievePokemon(Url, pokemonName) {
     })
     .then(function(data) {
         let pokemonElement = document.querySelector(`.${pokemonName}`)
-        console.log(data)
         pokemonElement.innerHTML += `
             <img src=${data.sprites.front_default}></img>
-            <h3>${data.name} </h3>
-            <div>Type: ${data.types[0].type.name}</div>` 
+            <div class='name'>${data.name} </div>
+            <div class='type'>Type: ${data.types[0].type.name}</div>` 
     })
     .catch(function(error) {
         console.error(error)
